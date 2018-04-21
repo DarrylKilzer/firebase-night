@@ -10,6 +10,9 @@ let store = new vuex.Store({
     state: {
         user: {},
         boards: [],
+        activeBoard: {},
+        posts: [],
+        replies: {},
         loading: true
     },
     mutations: {
@@ -35,6 +38,26 @@ let store = new vuex.Store({
         },
         addBoard({ commit, dispatch }, payload) {
             db.collection('boards').add(payload)
+                .then(function (docRef) {
+                    console.log('Document written with ID: ', docRef.id)
+                })
+                .catch(function (error) {
+                    console.error('Error adding document: ', error)
+                })
+        },
+        getPosts({ commit, dispatch }) {
+            // db.collection('boards').where(firebase.firestore.FieldPath.documentId(), "==" , "2HeDtYnpF7OF4ly6jM9b").get().then(querySnapshot => {
+                db.collection('posts').get().then(querySnapshot => {
+                var posts = []
+                querySnapshot.forEach((doc) => {
+                    let data = doc.data()
+                    posts.push(data)
+                })
+                commit('setPosts', posts)
+            })
+        },
+        addPost({ commit, dispatch }, payload) {
+            db.collection('posts').add(payload)
                 .then(function (docRef) {
                     console.log('Document written with ID: ', docRef.id)
                 })
