@@ -9,32 +9,32 @@ vue.use(vuex)
 let store = new vuex.Store({
     state: {
         user: {},
-        contacts: [],
+        boards: [],
         loading: true
     },
     mutations: {
         setUser(state, payload) {
             state.user = payload
         },
-        setContacts(state, payload) {
-            state.contacts = payload
+        setBoards(state, payload) {
+            state.boards = payload
             state.loading = false
         }
     },
     actions: {
-        getContacts({ commit, dispatch }) {
-            // db.collection('contacts').where(firebase.firestore.FieldPath.documentId(), "==" , "2HeDtYnpF7OF4ly6jM9b").get().then(querySnapshot => {
-                db.collection('contacts').get().then(querySnapshot => {
-                var contacts = []
+        getBoards({ commit, dispatch }) {
+            // db.collection('boards').where(firebase.firestore.FieldPath.documentId(), "==" , "2HeDtYnpF7OF4ly6jM9b").get().then(querySnapshot => {
+                db.collection('boards').get().then(querySnapshot => {
+                var boards = []
                 querySnapshot.forEach((doc) => {
                     let data = doc.data()
-                    contacts.push(data)
+                    boards.push(data)
                 })
-                commit('setContacts', contacts)
+                commit('setBoards', boards)
             })
         },
-        saveContact({ commit, dispatch }, payload) {
-            db.collection('persons').add(payload)
+        addBoard({ commit, dispatch }, payload) {
+            db.collection('boards').add(payload)
                 .then(function (docRef) {
                     console.log('Document written with ID: ', docRef.id)
                 })

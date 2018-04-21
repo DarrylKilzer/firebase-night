@@ -1,17 +1,15 @@
 <template>
   <div class="dashboard">
-    <div v-for="contact in contacts">
-      {{contact}}
+    <div v-for="board in boards">
+      {{board}}
     </div>
-    <h1>Add Contact</h1>
-    <form @submit.prevent="add(contact);contact = {};">
+    <h1>Add Board</h1>
+    <form @submit.prevent="add(board);board = {};">
       <label for="name">Name</label>
-      <input type="name" id="name" v-model="contact.name">
-      <label for="email">Email</label>
-      <input type="email" id="email" v-model="contact.email">
-      <label for="phone">Phone</label>
-      <input type="phone" id="phone" v-model="contact.phoneNumber">
-      <button type="submit">Add Contact</button>
+      <input type="text" id="name" v-model="board.name">
+      <label for="description">Description</label>
+      <input type="text" id="description" v-model="board.description">
+      <button type="submit">Add Board</button>
     </form>
   </div>
 </template>
@@ -21,20 +19,20 @@
     name: 'dashboard',
     data() {
       return {
-        contact: {}
+        board: {}
       }
     },
     created() {
-      this.$store.dispatch('getContacts')
+      this.$store.dispatch('getBoards')
     },
     methods: {
-      add(contact) {
-        this.$store.dispatch('addContact', contact)
+      add(board) {
+        this.$store.dispatch('addBoard', board)
       }
     },
     computed: {
-      contacts() {
-        return this.$store.state.contacts
+      boards() {
+        return this.$store.state.boards
       }
     }
   }
