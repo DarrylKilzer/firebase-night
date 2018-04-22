@@ -1,7 +1,8 @@
 <template>
-    <div class="post">
+    <div class="board">
       <div v-for="post in posts">
-        {{post}}
+        <h1>{{post.title}}</h1>
+        <h5>{{post.body}}</h5>
       </div>
       <h1>Add Post</h1>
       <form @submit.prevent="add(post);post = {};">
@@ -16,23 +17,27 @@
   
   <script>
     export default {
-      name: 'post',
+      name: 'board',
       data() {
         return {
           post: {}
         }
       },
       created() {
-        this.$store.dispatch('getPosts')
+        this.$store.dispatch('getPosts', this.$route.params.boardId)
       },
       methods: {
         add(post) {
+          post.boardId = this.board.id
           this.$store.dispatch('addPost', post)
         }
       },
       computed: {
         posts() {
           return this.$store.state.posts
+        },
+        board(){
+          return this.$store.state.activeBoard
         }
       }
     }

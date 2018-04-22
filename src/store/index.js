@@ -22,15 +22,22 @@ let store = new vuex.Store({
         setBoards(state, payload) {
             state.boards = payload
             state.loading = false
-        }
+        },
+        setPosts(state, payload) {
+            state.posts = payload
+        },
+        setActiveBoard(state, payload) {
+            state.activeBoard = payload
+        },
     },
     actions: {
         getBoards({ commit, dispatch }) {
             // db.collection('boards').where(firebase.firestore.FieldPath.documentId(), "==" , "2HeDtYnpF7OF4ly6jM9b").get().then(querySnapshot => {
-                db.collection('boards').get().then(querySnapshot => {
+            db.collection('boards').get().then(querySnapshot => {
                 var boards = []
                 querySnapshot.forEach((doc) => {
                     let data = doc.data()
+                    data.id = doc.id
                     boards.push(data)
                 })
                 commit('setBoards', boards)
@@ -40,17 +47,23 @@ let store = new vuex.Store({
             db.collection('boards').add(payload)
                 .then(function (docRef) {
                     console.log('Document written with ID: ', docRef.id)
+                    dispatch('getBoards')
                 })
                 .catch(function (error) {
                     console.error('Error adding document: ', error)
                 })
         },
-        getPosts({ commit, dispatch }) {
-            // db.collection('boards').where(firebase.firestore.FieldPath.documentId(), "==" , "2HeDtYnpF7OF4ly6jM9b").get().then(querySnapshot => {
-                db.collection('posts').get().then(querySnapshot => {
+        activeBoard({ commit, dispatch }, board) {
+            commit('setActiveBoard', board)
+            router.push('/boards/'+board.id)
+        },
+        getPosts({ commit, dispatch }, boardId) {
+            db.collection('posts').where("boardId", "==" , boardId).get().then(querySnapshot => {
+            // db.collection('posts').get().then(querySnapshot => {
                 var posts = []
                 querySnapshot.forEach((doc) => {
                     let data = doc.data()
+                    data.id = doc.id
                     posts.push(data)
                 })
                 commit('setPosts', posts)
@@ -59,6 +72,7 @@ let store = new vuex.Store({
         addPost({ commit, dispatch }, payload) {
             db.collection('posts').add(payload)
                 .then(function (docRef) {
+                    dispatch('getPosts', payload.boardId)
                     console.log('Document written with ID: ', docRef.id)
                 })
                 .catch(function (error) {

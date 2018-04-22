@@ -1,10 +1,11 @@
 <template>
   <div class="dashboard">
-    <div v-for="board in boards">
-      {{board}}
+    <div style="outline: 1px solid;" v-for="board in boards" @click="activeBoard(board)">
+        <h1>{{board.name}}</h1>
+        <h5>{{board.description}}</h5>
     </div>
     <h1>Add Board</h1>
-    <form @submit.prevent="add(board);board = {};">
+    <form @submit.prevent="add(board); board = {};">
       <label for="name">Name</label>
       <input type="text" id="name" v-model="board.name">
       <label for="description">Description</label>
@@ -28,6 +29,9 @@
     methods: {
       add(board) {
         this.$store.dispatch('addBoard', board)
+      },
+      activeBoard(board){
+        this.$store.dispatch('activeBoard', board)
       }
     },
     computed: {

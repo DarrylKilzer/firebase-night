@@ -21,7 +21,7 @@ var router = new Router({
       component: Login
     },
     {
-      path: '/board/:boardId',
+      path: '/boards/:boardId',
       name: 'Board',
       component: Board
     },
