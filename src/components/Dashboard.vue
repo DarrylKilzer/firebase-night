@@ -1,8 +1,11 @@
 <template>
   <div class="dashboard">
-    <div style="outline: 1px solid;" v-for="board in boards" @click="activeBoard(board)">
+    <div style="outline: 1px solid;" v-for="board in boards">
+      <div class="board"  @click="activeBoard(board.id)">
         <h1>{{board.name}}</h1>
         <h5>{{board.description}}</h5>
+      </div>  
+        <button @click="remove(board.id)">Delete</button>
     </div>
     <h1>Add Board</h1>
     <form @submit.prevent="add(board); board = {};">
@@ -30,8 +33,11 @@
       add(board) {
         this.$store.dispatch('addBoard', board)
       },
-      activeBoard(board){
-        this.$store.dispatch('activeBoard', board)
+      activeBoard(boardId){
+        this.$store.dispatch('getBoard', boardId)
+      },
+      remove(boardId){
+        this.$store.dispatch('deleteBoard', boardId)
       }
     },
     computed: {

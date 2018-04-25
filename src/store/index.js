@@ -32,8 +32,8 @@ let store = new vuex.Store({
     },
     actions: {
         getBoards({ commit, dispatch }) {
-            // db.collection('boards').where(firebase.firestore.FieldPath.documentId(), "==" , "2HeDtYnpF7OF4ly6jM9b").get().then(querySnapshot => {
-            db.collection('boards').get().then(querySnapshot => {
+            db.collection('boards').where("userId", "==" , firebase.auth().currentUser.uid).get().then(querySnapshot => {
+            // db.collection('boards').get().then(querySnapshot => {
                 var boards = []
                 querySnapshot.forEach((doc) => {
                     let data = doc.data()
@@ -43,7 +43,26 @@ let store = new vuex.Store({
                 commit('setBoards', boards)
             })
         },
+        getBoard({ commit, dispatch }, boardId) {
+            db.collection('boards').doc(boardId).get().then(doc =>{
+                if(doc.exists){
+                    var board = doc.data()
+                    board.id = doc.id
+                    commit('setActiveBoard', board)
+                    router.push('/boards/' + boardId)
+                }
+                else{
+                    console.log("No such document")
+                }
+            })
+        },
+        deleteBoard({ commit, dispatch }, boardId) {
+            db.collection('boards').doc(boardId).delete().then(() =>{
+                    dispatch('getBoards')
+            })
+        },
         addBoard({ commit, dispatch }, payload) {
+            payload.userId = firebase.auth().currentUser.uid
             db.collection('boards').add(payload)
                 .then(function (docRef) {
                     console.log('Document written with ID: ', docRef.id)
@@ -52,10 +71,6 @@ let store = new vuex.Store({
                 .catch(function (error) {
                     console.error('Error adding document: ', error)
                 })
-        },
-        activeBoard({ commit, dispatch }, board) {
-            commit('setActiveBoard', board)
-            router.push('/boards/'+board.id)
         },
         getPosts({ commit, dispatch }, boardId) {
             db.collection('posts').where("boardId", "==" , boardId).get().then(querySnapshot => {
