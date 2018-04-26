@@ -81,8 +81,7 @@ let store = new vuex.Store({
                 })
         },
         getPosts({ commit, dispatch }, boardId) {
-            db.collection('boards').doc(boardId).collection('posts').get().then(querySnapshot => {
-                debugger
+            db.collection('posts').where("boardId", "==", boardId).get().then(querySnapshot => {
             // db.collection('posts').get().then(querySnapshot => {
                 var posts = []
                 querySnapshot.forEach((doc) => {
