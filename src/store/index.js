@@ -11,7 +11,6 @@ let store = new vuex.Store({
         user: {},
         boards: [],
         activeBoard: {},
-        posts: [],
         replies: {},
         loading: true
     },
@@ -32,14 +31,23 @@ let store = new vuex.Store({
     },
     actions: {
         getBoards({ commit, dispatch }) {
-            db.collection('boards').where("userId", "==" , firebase.auth().currentUser.uid).get().then(querySnapshot => {
+            db.collection('boards').get().then(querySnapshot => {
             // db.collection('boards').get().then(querySnapshot => {
                 var boards = []
                 querySnapshot.forEach((doc) => {
-                    let data = doc.data()
-                    data.id = doc.id
-                    boards.push(data)
+                    let board = doc.data()
+                    board.id = doc.id
+                    db.collection('boards').doc(doc.id).collection('posts').get().then(querySnapshot => {
+                        board.posts =[]
+                        querySnapshot.forEach((doc) => {
+                            let post = doc.data()
+                            post.id = doc.id
+                            board.posts.push(post)
+                        })
+                        boards.push(board)
+                    })
                 })
+                // dispatch('getPosts', boards[0].id)
                 commit('setBoards', boards)
             })
         },
@@ -62,7 +70,7 @@ let store = new vuex.Store({
             })
         },
         addBoard({ commit, dispatch }, payload) {
-            payload.userId = firebase.auth().currentUser.uid
+            // payload.userId = firebase.auth().currentUser.uid
             db.collection('boards').add(payload)
                 .then(function (docRef) {
                     console.log('Document written with ID: ', docRef.id)
@@ -73,7 +81,8 @@ let store = new vuex.Store({
                 })
         },
         getPosts({ commit, dispatch }, boardId) {
-            db.collection('posts').where("boardId", "==" , boardId).get().then(querySnapshot => {
+            db.collection('boards').doc(boardId).collection('posts').get().then(querySnapshot => {
+                debugger
             // db.collection('posts').get().then(querySnapshot => {
                 var posts = []
                 querySnapshot.forEach((doc) => {
@@ -97,6 +106,9 @@ let store = new vuex.Store({
         register({ commit, dispatch }, payload) {
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
                 .then(res => {
+                    firebase.auth().currentUser.sendEmailVerification().then(res=>{
+                        console.log(res)
+                    })
                     commit('setUser', firebase.auth().currentUser)
                     router.push('/')
                 })
