@@ -105,9 +105,11 @@ let store = new vuex.Store({
         register({ commit, dispatch }, payload) {
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
                 .then(res => {
+                    firebase.auth().currentUser.updateProfile({displayName: payload.displayName})
                     firebase.auth().currentUser.sendEmailVerification().then(res=>{
                         console.log(res)
                     })
+                    console.log(res)
                     commit('setUser', firebase.auth().currentUser)
                     router.push('/')
                 })

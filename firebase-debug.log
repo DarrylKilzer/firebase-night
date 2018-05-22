@@ -1,0 +1,27 @@
+[debug] [2018-05-03T02:54:59.325Z] ----------------------------------------------------------------------
+[debug] [2018-05-03T02:54:59.330Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\darry\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase open
+[debug] [2018-05-03T02:54:59.330Z] CLI Version:   3.18.4
+[debug] [2018-05-03T02:54:59.330Z] Platform:      win32
+[debug] [2018-05-03T02:54:59.330Z] Node Version:  v9.9.0
+[debug] [2018-05-03T02:54:59.331Z] Time:          Wed May 02 2018 20:54:59 GMT-0600 (Mountain Daylight Time)
+[debug] [2018-05-03T02:54:59.331Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-03T02:54:59.372Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
+[debug] [2018-05-03T02:54:59.375Z] > authorizing via signed-in user
+[debug] [2018-05-03T02:54:59.381Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-05-03T02:54:59.382Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/i2IbmClTXymud4jBki4csn9HXdkx5epBYSJOFUJxmX0',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Wed May 02 2018 20:54:59 GMT-0600 (Mountain Daylight Time)
+[debug] [2018-05-03T02:54:59.653Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-03T02:54:59.667Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/test-31617  
+  
+ Wed May 02 2018 20:54:59 GMT-0600 (Mountain Daylight Time)
+[debug] [2018-05-03T02:55:00.417Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-03T02:55:00.418Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/test-31617/tokens  
+  
+ Wed May 02 2018 20:55:00 GMT-0600 (Mountain Daylight Time)
+[debug] [2018-05-03T02:55:01.150Z] <<< HTTP RESPONSE 200
